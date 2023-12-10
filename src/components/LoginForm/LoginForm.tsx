@@ -1,8 +1,23 @@
-import { FormEvent } from "react";
+import useLogin from "@/Hooks/useLogin";
+import { useRouter } from "next/router";
+import { FormEvent, useState } from "react";
 
 const LoginForm = () => {
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<boolean>(false);
+
+  const router = useRouter();
+  const { updateLogin, previousUsername } = useLogin();
+
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    console.log("ok");
+    if (username == "codecamp" && password == "123") {
+      updateLogin("Log Out");
+      previousUsername();
+      router.push("/");
+    } else {
+      setError(true);
+    }
   };
 
   return (
@@ -35,6 +50,10 @@ const LoginForm = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Code camp"
                   required
+                  value={username}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
                 />
               </div>
               <div>
@@ -51,7 +70,24 @@ const LoginForm = () => {
                   placeholder="password"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                 />
+              </div>
+              <div className="flex justify-center">
+                <p className="">
+                  {error ? (
+                    <span className="text-rose-600 font-bold">
+                      Invalid Username or Password
+                    </span>
+                  ) : (
+                    <span className="text-transparent relative -z-10">
+                      error
+                    </span>
+                  )}
+                </p>
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-start">
@@ -61,10 +97,22 @@ const LoginForm = () => {
               <button className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 mr-10 ml-7 px-4 rounded">
                 Sign In
               </button>
-              <button className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 mr-10 px-4 rounded">
-                Sign Up
+              <button
+                className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 mr-10 px-4 rounded"
+                onClick={() => {
+                  router.push("/");
+                }}
+              >
+                close
               </button>
-              <button className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              <button
+                className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => {
+                  setUsername("");
+                  setPassword("");
+                  setError(false);
+                }}
+              >
                 Reset
               </button>
             </form>

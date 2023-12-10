@@ -5,12 +5,12 @@ const CardImage = ({ imageUrl }: { imageUrl: SetImage }) => {
   const { logo } = imageUrl;
   return (
     <>
-      <div className="relative w-[300px] h-[250px]">
+      <div className="relative w-[300px] h-[300px] p-16">
         <Image
           src={logo}
           alt={"images"}
-          width={500}
-          height={500}
+          width={300}
+          height={300}
           priority={true}
         />
       </div>

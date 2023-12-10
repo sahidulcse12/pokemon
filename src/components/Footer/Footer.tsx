@@ -5,7 +5,7 @@ const Footer = () => {
         <div className="md:flex md:items-center">
           <div className="md:flex-1 md:px-4 text-center md:text-left">
             <p className="text-white">
-              &copy; <strong>FWR</strong>
+              &copy; <strong>POKEMON</strong>
             </p>
           </div>
           <div className="md:flex-1 md:px-4 text-center md:text-right">
