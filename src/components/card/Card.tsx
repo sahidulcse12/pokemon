@@ -10,12 +10,7 @@ import ViewModal from "./ViewModal";
 
 const Card = (props: { item: PokemonTCG.Set }) => {
   const { images, ...info } = props.item;
-  const { increment, addId } = useCount();
   const { mutate: updateName } = useUpdateSetName();
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleModal = () => {
-    setOpenModal(!openModal);
-  };
 
   const [editOpen, setEditOpen] = React.useState(false);
   const [editedName, setEditedName] = useState("");
@@ -40,9 +35,8 @@ const Card = (props: { item: PokemonTCG.Set }) => {
           <CardImage imageUrl={images} />
         </Link>
         <CardInfo info={info} />
-        <ViewModal info={props.item} />
 
-        {/* edit modal */}
+        <ViewModal info={props.item} />
 
         <button
           className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 mr-10 ml-3 px-4 rounded"

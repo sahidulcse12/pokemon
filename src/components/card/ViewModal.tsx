@@ -1,19 +1,37 @@
 import useCount from "@/Hooks/useCount";
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import CardImage from "./CardImage";
 import CardInfo from "./CardInfo";
 import Link from "next/link";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
+import { addToDb, getShoppingCart } from "@/utilities/fakeDB";
+import { useSets } from "@/Hooks/useSets";
 
 const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
   const { id, images } = info;
-  const { increment, addId } = useCount();
+  const { increment, addId, count } = useCount();
   const [openModal, setOpenModal] = useState(false);
 
   const handleModal = () => {
     setOpenModal(!openModal);
   };
+
+  //useEffect for localStorage
+
+  const setsObject = useSets();
+  const sets = setsObject.data;
+
+  useEffect(() => {
+    const storedCard = getShoppingCart();
+    // console.log(data, "use effect");
+    for (const id in storedCard) {
+      const addedCards = sets?.find((c) => c.id === id);
+      // console.log(addedCard, "save effect");
+      const quantity = storedCard[id];
+      console.log(quantity, "quantity");
+    }
+  }, []);
 
   return (
     <>
@@ -78,6 +96,7 @@ const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
                             onClick={() => {
                               increment();
                               addId(id);
+                              addToDb(id);
                             }}
                           >
                             Add to Cart
