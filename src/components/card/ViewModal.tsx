@@ -5,7 +5,7 @@ import CardImage from "./CardImage";
 import CardInfo from "./CardInfo";
 import Link from "next/link";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
-import { addToDb, getShoppingCart } from "@/utilities/fakeDB";
+// import { addToDb, getShoppingCart } from "@/utilities/fakeDB";
 import { useSets } from "@/Hooks/useSets";
 
 const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
@@ -22,16 +22,16 @@ const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
   const setsObject = useSets();
   const sets = setsObject.data;
 
-  useEffect(() => {
-    const storedCard = getShoppingCart();
-    // console.log(data, "use effect");
-    for (const id in storedCard) {
-      const addedCards = sets?.find((c) => c.id === id);
-      // console.log(addedCard, "save effect");
-      const quantity = storedCard[id];
-      console.log(quantity, "quantity");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedCard = getShoppingCart();
+  //   // console.log(data, "use effect");
+  //   for (const id in storedCard) {
+  //     const addedCards = sets?.find((c) => c.id === id);
+  //     // console.log(addedCard, "save effect");
+  //     // const quantity = storedCard[id];
+  //     // console.log(quantity, "quantity");
+  //   }
+  // }, [sets]);
 
   return (
     <>
@@ -96,7 +96,7 @@ const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
                             onClick={() => {
                               increment();
                               addId(id);
-                              addToDb(id);
+                              // addToDb(id);
                             }}
                           >
                             Add to Cart
