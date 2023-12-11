@@ -1,67 +1,34 @@
+import useCount from "@/Hooks/useCount";
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import CardImage from "./CardImage";
+import CardInfo from "./CardInfo";
+import Link from "next/link";
+import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
 
-const MutateModal = () => {
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [ename, setEname] = useState("");
+const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
+  const { id, images } = info;
+  const { increment, addId } = useCount();
+  const [openModal, setOpenModal] = useState(false);
 
-  // const openModal = () => {
-  //   setIsModalOpen(true);
-  // };
-
-  // const closeModal = () => {
-  //   setIsModalOpen(false);
-  // };
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setEname(event.target.value);
-  // };
-
-  // const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   setEname("");
-  // };
-
-  const [editOpen, setEditOpen] = React.useState(false);
-  const handleEditModal = () => {
-    setEditOpen(!editOpen);
+  const handleModal = () => {
+    setOpenModal(!openModal);
   };
 
   return (
     <>
-      {/* <button
+      <button
         className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 mr-10 ml-3 px-4 rounded"
         onClick={handleModal}
       >
-        Edit
+        view details
       </button>
-
-      <CustomModalComponent info={info} onClose={closeModal} open={openModal}>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="ename"
-            id="ename"
-            value={ename}
-            onChange={handleChange}
-            required
-          />
-          <div className="mt-2">
-            <input
-              type="submit"
-              onClick={() => updateName({ setid: info.id!, setName: ename })}
-              className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            />
-          </div>
-        </form>
-      </CustomModalComponent> */}
-
-      <Transition.Root show={editOpen} as={Fragment}>
+      <Transition.Root show={openModal} as={Fragment}>
         <Dialog
           as="div"
           className="relative z-5"
-          onClose={setEditOpen}
-          open={editOpen}
+          onClose={setOpenModal}
+          open={openModal}
         >
           <Transition.Child
             as={Fragment}
@@ -86,28 +53,41 @@ const MutateModal = () => {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all w-[500px] sm:my-8 sm:w-full sm:max-w-lg">
+                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                   <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-center">
-                      <div className="mt-3  sm:ml-4 sm:mt-0 text-left">
-                        <Dialog.Title
-                          as="h3"
-                          className="text-center font-semibold text-gray-900"
-                        >
-                          Edit Name
-                        </Dialog.Title>
-                        <div className="mt-2"></div>
+                      <div className="mt-3 sm:mt-0 text-left">
+                        <div className="mt-2">
+                          <Link href={`/loadCard/sets/${info.id}`}>
+                            <div className="h-[230px] p-16 pt-36 mb-5 m-auto flex justify-center items-center bg-gray-100 hover:bg-gray-200 border-[1px] border-gray-300 transition rounded-md">
+                              <CardImage imageUrl={images} />
+                            </div>
+                          </Link>
+                          <CardInfo info={info} />
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div className="bg-gray-50 px-4 py-3 pb-10">
                     <div className="m-auto">
                       <div className="px-10 grid grid-cols-2">
+                        <div className="flex justify-start">
+                          <button
+                            className="text-white form-button clear w-28 bg-green-500 rounded hover:bg-blue-700"
+                            type="button"
+                            onClick={() => {
+                              increment();
+                              addId(id);
+                            }}
+                          >
+                            Add to Cart
+                          </button>
+                        </div>
                         <div className="flex justify-end">
                           <button
                             type="button"
-                            className="form-button clear w-28"
-                            onClick={() => setEditOpen(false)}
+                            className="text-white form-button clear w-28 bg-green-500 rounded hover:bg-red-700 py-2"
+                            onClick={() => setOpenModal(false)}
                           >
                             Cancel
                           </button>
@@ -125,4 +105,4 @@ const MutateModal = () => {
   );
 };
 
-export default MutateModal;
+export default ViewModal;

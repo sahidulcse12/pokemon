@@ -9,6 +9,7 @@ export const useUpdateSetName = () => {
     mutationFn: ({ setId, setName }: { setId: string; setName: string }) =>
       editSetName(setId, setName),
     onSuccess: (data, variables) => {
+      console.log(variables);
       queryClient.setQueryData(
         [QueryKeys.CardSets],
         (initialSets: PokemonTCG.Set[]) => {
