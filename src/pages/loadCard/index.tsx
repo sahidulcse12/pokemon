@@ -1,5 +1,24 @@
+import { QueryKeys } from "@/Enums";
 import { useSets } from "@/Hooks/useSets";
+import { useUpdateSetName } from "@/Hooks/useUpdateSetName";
+import { getCardData } from "@/Service/pokemon.service";
 import Card from "@/components/card/Card";
+import { DehydratedState, QueryClient, dehydrate } from "@tanstack/react-query";
+import { GetServerSidePropsContext } from "next";
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+): Promise<{ props: { dehydratedState: DehydratedState } }> => {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: [QueryKeys.CardSets],
+    queryFn: async () => {
+      const sets = await getCardData();
+      return sets;
+    },
+  });
+  return { props: { dehydratedState: dehydrate(queryClient) } };
+};
 
 const LoadCard = () => {
   const setsObject = useSets();

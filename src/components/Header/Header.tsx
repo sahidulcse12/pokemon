@@ -8,10 +8,6 @@ const Header = () => {
   const { login, username, updateLogin, updateUsername } = useLogin();
   const { count } = useStore();
 
-  // const handleClick = () => {
-  //   router.push("/");
-  // };
-
   return (
     <div className="sticky top-0 z-20">
       <nav className="bg-gray-500 border-gray-200 dark:bg-gray-900 text-white">
@@ -40,10 +36,10 @@ const Header = () => {
             {count}
           </Link>
           <div className="flex md:order-2">
-            {username}
+            <span className="mt-2">{username}</span>
             <button
               type="submit"
-              className="ml-5 bg-slate-400 p-1 rounded"
+              className="ml-5 bg-slate-600 py-2 px-3 rounded"
               onClick={(e) => {
                 updateLogin("Login");
                 updateUsername("");
