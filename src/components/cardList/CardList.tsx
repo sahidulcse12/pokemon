@@ -15,15 +15,13 @@ const CardList = () => {
   });
 
   return (
-    <>
-      <div className="min-h-[750px]">
-        <div className="grid grid-cols-3 p-20">
-          {findData?.map((x, index) => (
-            <ShowCard item={x} key={index} />
-          ))}
-        </div>
+    <div className="min-h-[560px]">
+      <div className="grid grid-cols-3 p-20">
+        {findData?.map((x, index) => (
+          <ShowCard item={x} key={index} />
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 
