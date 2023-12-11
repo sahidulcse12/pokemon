@@ -5,8 +5,6 @@ import CardImage from "./CardImage";
 import CardInfo from "./CardInfo";
 import Link from "next/link";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
-// import { addToDb, getShoppingCart } from "@/utilities/fakeDB";
-import { useSets } from "@/Hooks/useSets";
 
 const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
   const { id, images } = info;
@@ -16,22 +14,6 @@ const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
   const handleModal = () => {
     setOpenModal(!openModal);
   };
-
-  //useEffect for localStorage
-
-  const setsObject = useSets();
-  const sets = setsObject.data;
-
-  // useEffect(() => {
-  //   const storedCard = getShoppingCart();
-  //   // console.log(data, "use effect");
-  //   for (const id in storedCard) {
-  //     const addedCards = sets?.find((c) => c.id === id);
-  //     // console.log(addedCard, "save effect");
-  //     // const quantity = storedCard[id];
-  //     // console.log(quantity, "quantity");
-  //   }
-  // }, [sets]);
 
   return (
     <>
@@ -96,7 +78,6 @@ const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
                             onClick={() => {
                               increment();
                               addId(id);
-                              // addToDb(id);
                             }}
                           >
                             Add to Cart
