@@ -1,5 +1,15 @@
 import create from "zustand";
 
+export const useCartCount = create<{ random: number; setRandom: () => void }>(
+  (set) => ({
+    random: 0,
+    setRandom: () =>
+      set((state: { random: number }) => ({
+        random: Math.ceil(Math.random() * 500),
+      })),
+  })
+);
+
 type Store = {
   count: number;
   increment: () => void;

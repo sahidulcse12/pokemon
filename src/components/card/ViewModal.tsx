@@ -1,10 +1,14 @@
-import useCount from "@/Hooks/useCount";
+import useCount, { useCartCount } from "@/Hooks/useCount";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import CardImage from "./CardImage";
 import CardInfo from "./CardInfo";
 import Link from "next/link";
 import { PokemonTCG } from "pokemon-tcg-sdk-typescript";
+import { useSets } from "@/Hooks/useSets";
+import { useStore } from "zustand";
+import { getItem, setItem } from "@/utilities/fakeDB";
+import { Set } from "pokemon-tcg-sdk-typescript/dist/sdk";
 
 const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
   const { id, images } = info;
@@ -13,6 +17,28 @@ const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
 
   const handleModal = () => {
     setOpenModal(!openModal);
+  };
+
+  const setsObject = useSets();
+  const products = setsObject.data;
+
+  const defaultState: { count: 0; items: Set[] } = { count: 0, items: [] };
+  const { random, setRandom } = useCartCount();
+  const [cart, setCartCount] = useState<{ count: number; items: Set[] }>(
+    defaultState
+  );
+  useEffect(() => {
+    let c = getItem("cart");
+    if (!c) c = defaultState;
+    setCartCount(c);
+  }, [random]);
+
+  const incCount = () => {
+    const newCart = { count: cart.count + 1, items: [...cart.items, info] };
+    setItem("cart", JSON.stringify(newCart));
+    setCartCount(newCart);
+    console.log(newCart);
+    setRandom();
   };
 
   return (
@@ -76,7 +102,7 @@ const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
                             className="text-white form-button clear w-28 bg-green-500 rounded hover:bg-blue-700"
                             type="button"
                             onClick={() => {
-                              increment();
+                              incCount();
                               addId(id);
                             }}
                           >

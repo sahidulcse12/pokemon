@@ -1,12 +1,30 @@
+import useCount, { useCartCount } from "@/Hooks/useCount";
 import useStore from "@/Hooks/useCount";
 import useLogin from "@/Hooks/useLogin";
+import { getItem } from "@/utilities/fakeDB";
+// import { getCart } from "@/utilities/fakeDB";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Set } from "pokemon-tcg-sdk-typescript/dist/sdk";
+import { useEffect, useState } from "react";
 
 const Header = () => {
   const router = useRouter();
   const { login, username, updateLogin, updateUsername } = useLogin();
-  const { count } = useStore();
+  // const { increment, addId, count } = useCount();
+  const { random, setRandom } = useCartCount();
+  const [totalCount, setTotalCount] = useState<number>();
+
+  const defaultState: { count: 0; items: Set[] } = { count: 0, items: [] };
+  const [cart, setCartCount] = useState<{ count: number; items: Set[] }>(
+    defaultState
+  );
+
+  useEffect(() => {
+    let c = getItem("cart");
+    if (!c) c = defaultState;
+    setCartCount(c);
+  }, [random]);
 
   return (
     <div className="sticky top-0 z-20">
@@ -33,7 +51,7 @@ const Header = () => {
                 />
               </svg>
             </span>
-            {count}
+            {cart?.count}
           </Link>
           <div className="flex md:order-2">
             <span className="mt-2">{username}</span>
