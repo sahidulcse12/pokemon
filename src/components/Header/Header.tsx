@@ -1,6 +1,7 @@
 import useCount, { useCartCount } from "@/Hooks/useCount";
 import useStore from "@/Hooks/useCount";
 import useLogin from "@/Hooks/useLogin";
+import { StampedSet } from "@/types";
 import { getItem } from "@/utilities/fakeDB";
 // import { getCart } from "@/utilities/fakeDB";
 import Link from "next/link";
@@ -15,8 +16,11 @@ const Header = () => {
   const { random, setRandom } = useCartCount();
   const [totalCount, setTotalCount] = useState<number>();
 
-  const defaultState: { count: 0; items: Set[] } = { count: 0, items: [] };
-  const [cart, setCartCount] = useState<{ count: number; items: Set[] }>(
+  const defaultState: { count: 0; items: StampedSet[] } = {
+    count: 0,
+    items: [],
+  };
+  const [cart, setCartCount] = useState<{ count: number; items: StampedSet[] }>(
     defaultState
   );
 

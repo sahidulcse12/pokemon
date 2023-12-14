@@ -19,3 +19,10 @@ export const getItem = (key: string) => {
   const itemJson = JSON.parse(item!);
   return itemJson;
 };
+
+export const deleteItem = (key: string) => {
+  const localStorage = getLocalStorage();
+  if (!localStorage) return undefined;
+  const item = localStorage.removeItem(key);
+  return item;
+};

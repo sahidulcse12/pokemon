@@ -1,9 +1,10 @@
-import useCount from "@/Hooks/useCount";
+import useCount, { useCartCount } from "@/Hooks/useCount";
 import { useSets } from "@/Hooks/useSets";
 import { Set } from "pokemon-tcg-sdk-typescript/dist/sdk";
 import ShowCard from "./ShowCard";
-import { useEffect } from "react";
-import { setItem } from "@/utilities/fakeDB";
+import { useEffect, useState } from "react";
+import { getItem, setItem } from "@/utilities/fakeDB";
+import { StampedSet } from "@/types";
 
 const CardList = () => {
   const { cartIds } = useCount();
@@ -16,15 +17,25 @@ const CardList = () => {
     findData.push(...(result as Set[]));
   });
 
-  // useEffect(() => {
-  //   const cardData = setItem('', );
-  //   console.log(cardData, "ok");
-  // }, []);
+  const defaultState: { count: 0; items: StampedSet[] } = {
+    count: 0,
+    items: [],
+  };
+  const { random, setRandom } = useCartCount();
+  const [cart, setCartCount] = useState<{ count: number; items: StampedSet[] }>(
+    defaultState
+  );
+
+  useEffect(() => {
+    let c = getItem("cart");
+    if (!c) c = defaultState;
+    setCartCount(c);
+  }, [random]);
 
   return (
     <div className="min-h-[560px]">
       <div className="grid grid-cols-3 p-20">
-        {findData?.map((x, index) => (
+        {cart.items?.map((x, index) => (
           <ShowCard item={x} key={index} />
         ))}
       </div>

@@ -9,6 +9,8 @@ import { useSets } from "@/Hooks/useSets";
 import { useStore } from "zustand";
 import { getItem, setItem } from "@/utilities/fakeDB";
 import { Set } from "pokemon-tcg-sdk-typescript/dist/sdk";
+import { timeStamp } from "console";
+import { StampedSet } from "@/types";
 
 const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
   const { id, images } = info;
@@ -22,9 +24,12 @@ const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
   const setsObject = useSets();
   const products = setsObject.data;
 
-  const defaultState: { count: 0; items: Set[] } = { count: 0, items: [] };
+  const defaultState: { count: 0; items: StampedSet[] } = {
+    count: 0,
+    items: [],
+  };
   const { random, setRandom } = useCartCount();
-  const [cart, setCartCount] = useState<{ count: number; items: Set[] }>(
+  const [cart, setCartCount] = useState<{ count: number; items: StampedSet[] }>(
     defaultState
   );
   useEffect(() => {
@@ -34,10 +39,12 @@ const ViewModal = ({ info }: { info: PokemonTCG.Set }) => {
   }, [random]);
 
   const incCount = () => {
-    const newCart = { count: cart.count + 1, items: [...cart.items, info] };
+    const newCart = {
+      count: cart.count + 1,
+      items: [...cart.items, { set: info, timeStamp: Date.now() }],
+    };
     setItem("cart", JSON.stringify(newCart));
     setCartCount(newCart);
-    console.log(newCart);
     setRandom();
   };
 
