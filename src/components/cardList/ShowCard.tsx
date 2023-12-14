@@ -29,7 +29,6 @@ const ShowCard = ({ item }: { item: StampedSet }) => {
     const filteredItems = cart.items.filter(
       (i) => !(i.set.id === item.set.id && i.timeStamp === item.timeStamp)
     );
-    console.log(filteredItems);
     const newCart = { count: cart.count - 1, items: [...filteredItems] };
     setItem("cart", JSON.stringify(newCart));
     setCartCount(newCart);
