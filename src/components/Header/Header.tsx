@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 const Header = () => {
   const router = useRouter();
   const { login, username, updateLogin, updateUsername } = useLogin();
-  // const { increment, addId, count } = useCount();
   const { random, setRandom } = useCartCount();
   const [totalCount, setTotalCount] = useState<number>();
 

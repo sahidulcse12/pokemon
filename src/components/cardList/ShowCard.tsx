@@ -7,13 +7,11 @@ import { useEffect, useState } from "react";
 
 const ShowCard = ({ item }: { item: StampedSet }) => {
   const { removeId, decrement } = useCount();
-
+  const { random, setRandom } = useCartCount();
   const defaultState: { count: 0; items: StampedSet[] } = {
     count: 0,
     items: [],
   };
-
-  const { random, setRandom } = useCartCount();
   const [cart, setCartCount] = useState<{ count: number; items: StampedSet[] }>(
     defaultState
   );

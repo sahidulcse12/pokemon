@@ -8,23 +8,22 @@ import { StampedSet } from "@/types";
 
 const CardList = () => {
   const { cartIds } = useCount();
+  const { random, setRandom } = useCartCount();
   const cardSets = useSets();
   const sets = cardSets.data;
+  const defaultState: { count: 0; items: StampedSet[] } = {
+    count: 0,
+    items: [],
+  };
+  const [cart, setCartCount] = useState<{ count: number; items: StampedSet[] }>(
+    defaultState
+  );
 
   let findData: Set[] = [];
   cartIds.forEach((id) => {
     const result = sets?.filter((x) => x.id === id);
     findData.push(...(result as Set[]));
   });
-
-  const defaultState: { count: 0; items: StampedSet[] } = {
-    count: 0,
-    items: [],
-  };
-  const { random, setRandom } = useCartCount();
-  const [cart, setCartCount] = useState<{ count: number; items: StampedSet[] }>(
-    defaultState
-  );
 
   useEffect(() => {
     let c = getItem("cart");
